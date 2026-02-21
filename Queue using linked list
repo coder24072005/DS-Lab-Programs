@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of queue node
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *front = NULL;
+struct Node *rear = NULL;
+
+// Insert (Enqueue) operation
+void enqueue(int item)
+{
+    struct Node *newNode;
+    newNode = (struct Node *)malloc(sizeof(struct Node));
+
+    if (newNode == NULL)
+    {
+        printf("Queue Overflow (Memory not available)\n");
+        return;
+    }
+
+    newNode->data = item;
+    newNode->next = NULL;
+
+    if (rear == NULL)   // first insertion
+    {
+        front = rear = newNode;
+    }
+    else
+    {
+        rear->next = newNode;
+        rear = newNode;
+    }
+
+    printf("Inserted %d into queue\n", item);
+}
+
+// Delete (Dequeue) operation
+void dequeue()
+{
+    struct Node *temp;
+
+    if (front == NULL)
+    {
+        printf("Queue Underflow (Queue is empty)\n");
+        return;
+    }
+
+    temp = front;
+    printf("Deleted element is %d\n", front->data);
+    front = front->next;
+
+    if (front == NULL)   // queue becomes empty
+        rear = NULL;
+
+    free(temp);
+}
+
+// Display queue elements
+void display()
+{
+    struct Node *temp;
+
+    if (front == NULL)
+    {
+        printf("Queue is empty\n");
+    }
+    else
+    {
+        printf("Queue elements are:\n");
+        temp = front;
+        while (temp != NULL)
+        {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int choice, item;
+
+    while (1)
+    {
+        printf("\n--- Queue Menu ---\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter element to insert: ");
+            scanf("%d", &item);
+            enqueue(item);
+            break;
+
+        case 2:
+            dequeue();
+            break;
+
+        case 3:
+            display();
+            break;
+
+        case 4:
+            return 0;
+
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
