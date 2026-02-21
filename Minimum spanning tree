@@ -1,0 +1,61 @@
+#include <stdio.h>
+#define MAX 10
+#define INF 9999
+
+int main()
+{
+    int graph[MAX][MAX], visited[MAX] = {0};
+    int v, i, j;
+    int edge_count = 0;
+    int min_cost = 0;
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &v);
+
+    printf("Enter adjacency matrix (0 if no edge):\n");
+    for (i = 0; i < v; i++)
+    {
+        for (j = 0; j < v; j++)
+        {
+            scanf("%d", &graph[i][j]);
+            if (graph[i][j] == 0)
+                graph[i][j] = INF;
+        }
+    }
+
+    visited[0] = 1;  // start from vertex 0
+
+    printf("\nEdges in Minimum Spanning Tree:\n");
+
+    while (edge_count < v - 1)
+    {
+        int min = INF;
+        int a = -1, b = -1;
+
+        for (i = 0; i < v; i++)
+        {
+            if (visited[i])
+            {
+                for (j = 0; j < v; j++)
+                {
+                    if (!visited[j] && graph[i][j] < min)
+                    {
+                        min = graph[i][j];
+                        a = i;
+                        b = j;
+                    }
+                }
+            }
+        }
+
+        visited[b] = 1;
+        edge_count++;
+        min_cost += min;
+
+        printf("%d -- %d  cost = %d\n", a, b, min);
+    }
+
+    printf("\nTotal cost of MST = %d\n", min_cost);
+
+    return 0;
+}
