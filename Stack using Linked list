@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of stack node
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *top = NULL;
+
+// Push operation
+void push(int item)
+{
+    struct Node *newNode;
+    newNode = (struct Node *)malloc(sizeof(struct Node));
+
+    if (newNode == NULL)
+    {
+        printf("Stack Overflow (Memory not available)\n");
+        return;
+    }
+
+    newNode->data = item;
+    newNode->next = top;
+    top = newNode;
+
+    printf("Pushed %d into stack\n", item);
+}
+
+// Pop operation
+void pop()
+{
+    struct Node *temp;
+
+    if (top == NULL)
+    {
+        printf("Stack Underflow (Stack is empty)\n");
+    }
+    else
+    {
+        temp = top;
+        printf("Popped element is %d\n", top->data);
+        top = top->next;
+        free(temp);
+    }
+}
+
+// Display stack elements
+void display()
+{
+    struct Node *temp;
+
+    if (top == NULL)
+    {
+        printf("Stack is empty\n");
+    }
+    else
+    {
+        printf("Stack elements are:\n");
+        temp = top;
+        while (temp != NULL)
+        {
+            printf("%d\n", temp->data);
+            temp = temp->next;
+        }
+    }
+}
+
+int main()
+{
+    int choice, item;
+
+    while (1)
+    {
+        printf("\n--- Stack Menu ---\n");
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter element to push: ");
+            scanf("%d", &item);
+            push(item);
+            break;
+
+        case 2:
+            pop();
+            break;
+
+        case 3:
+            display();
+            break;
+
+        case 4:
+            return 0;
+
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
